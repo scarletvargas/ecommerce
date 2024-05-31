@@ -23,19 +23,15 @@ const variantMap: Record<ApiAlertProps["variant"], BadgeProps["variant"]> = {
   admin: "destructive",
 };
 
-export const ApiAlert: React.FC<ApiAlertProps> = ({
-  title,
-  description,
-  variant = "public",
-}) => {
+export const ApiAlert: React.FC<ApiAlertProps> = ({ title, description, variant = "public" }) => {
   const onCopy = () => {
     navigator.clipboard.writeText(description);
     toast.success("API Route copied to the clipboard.");
   };
   return (
     <Alert>
-      <Server className="h-4 w-4" />
       <AlertTitle className="flex items-center gap-x-2">
+        <Server className="h-4 w-4" />
         {title}
         <Badge variant={variantMap[variant]}>{textMap[variant]}</Badge>
       </AlertTitle>
