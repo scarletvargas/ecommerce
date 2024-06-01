@@ -66,7 +66,7 @@ export async function GET(req: Request, { params }: { params: { storeId: string 
 
     return NextResponse.json(sizes);
   } catch (error) {
-    console.log(`[BILLBOARDS_GET]`, error);
+    console.log(`[SIZES_GET]`, error);
     return new NextResponse(`Internal error`, { status: 500 });
   }
 }
