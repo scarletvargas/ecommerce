@@ -1,28 +1,45 @@
 "use client";
 
-import { Expand, ShoppingCart } from "lucide-react";
+import { MouseEventHandler } from "react";
 import Image from "next/image";
-//import { useRouter } from "next/navigation";
+import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { Expand, ShoppingCart } from "lucide-react";
 
+import { Product } from "@/types";
 import IconButton from "@/components/ui/icon-button";
 import Currency from "@/components/ui/currency";
-import { Product } from "@/types";
-import Link from "next/link";
+import usePreviewModal from "@/hooks/use-preview-modal";
+import useCart from "@/hooks/use-cart";
 
 interface ProductCardProps {
   data: Product;
 }
 
 const ProductCard: React.FC<ProductCardProps> = ({ data }) => {
-  // const router = useRouter();
+  const cart = useCart()
+  const previewModal = usePreviewModal();
+  const router = useRouter();
 
-  // const handleClick = () => {
-  //   router.push(`/product/${data?.id}`);
-  // };
+  const handleClick = () => {
+    router.push(`/product/${data?.id}`);
+  };
+
+  const onPreview: MouseEventHandler<HTMLButtonElement> = (event) => {
+    event.stopPropagation();
+
+    previewModal.onOpen(data);
+  };
+
+  const onAddToCart: MouseEventHandler<HTMLButtonElement> = (event) => {
+    event.stopPropagation();
+
+    cart.addItem(data)
+  }; 
 
   return (
-    <Link
-      href={`/product/${data?.id}`}
+    <div
+      onClick={handleClick}
       className="bg-white group cursor-pointer rounded-xl border p-3 space-y-4"
     >
       {/* Images and Actions */}
@@ -35,8 +52,12 @@ const ProductCard: React.FC<ProductCardProps> = ({ data }) => {
         />
         <div className="opacity-0 group-hover:opacity-100 transition absolute w-full px-6 bottom-5">
           <div className="flex gap-x-6 justify-center">
-            <IconButton icon={<Expand className="text-gray-600 h-5 w-5" />} />
-            <IconButton icon={<ShoppingCart className="text-gray-600 h-5 w-5" />} />
+            <IconButton onClick={onPreview}>
+              <Expand className="text-gray-600 h-5 w-5" />
+            </IconButton>
+            <IconButton onClick={onAddToCart}>
+              <ShoppingCart className="text-gray-600 h-5 w-5" />
+            </IconButton>
           </div>
         </div>
       </div>
@@ -49,7 +70,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ data }) => {
       <div className="flex justify-between items-center">
         <Currency value={data?.price} />
       </div>
-    </Link>
+    </div>
   );
 };
 
