@@ -11,8 +11,6 @@ import useCart from "@/hooks/use-cart";
 
 const Summary = () => {
   const searchParams = useSearchParams();
-  //const success = searchParams.get("success");
-  //const canceled = searchParams.get("canceled");
 
   const items = useCart((state) => state.items);
   const removeAll = useCart((state) => state.removeAll);

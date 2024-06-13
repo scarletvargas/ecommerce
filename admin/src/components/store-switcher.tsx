@@ -1,12 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import {
-  Check,
-  ChevronsUpDown,
-  PlusCircle,
-  Store as StoreIcon,
-} from "lucide-react";
+import { Check, ChevronsUpDown, PlusCircle, Store as StoreIcon } from "lucide-react";
 import { useParams, useRouter } from "next/navigation";
 import { Store } from "@prisma/client";
 
@@ -26,9 +21,7 @@ import {
 import { cn } from "@/lib/utils";
 import { useStoreModal } from "@/hooks/use-store-modal";
 
-type PopoverTriggerProps = React.ComponentPropsWithoutRef<
-  typeof PopoverTrigger
->;
+type PopoverTriggerProps = React.ComponentPropsWithoutRef<typeof PopoverTrigger>;
 
 interface StoreSwitcherProps extends PopoverTriggerProps {
   items: Store[];
@@ -44,9 +37,7 @@ export function StoreSwitcher({ className, items = [] }: StoreSwitcherProps) {
     value: item.id,
   }));
 
-  const currentStore = formattedItems.find(
-    (item) => item.value === params.storeId
-  );
+  const currentStore = formattedItems.find((item) => item.value === params.storeId);
 
   const [open, setOpen] = useState(false);
 
@@ -54,8 +45,6 @@ export function StoreSwitcher({ className, items = [] }: StoreSwitcherProps) {
     setOpen(false);
     router.push(`/${store.value}`);
   };
-
-  console.log(items)
 
   return (
     <Popover open={open} onOpenChange={setOpen}>
@@ -90,9 +79,7 @@ export function StoreSwitcher({ className, items = [] }: StoreSwitcherProps) {
                   <Check
                     className={cn(
                       "ml-auto h-4 w-4",
-                      currentStore?.value === store.value
-                        ? "opacity-100"
-                        : "opacity-0"
+                      currentStore?.value === store.value ? "opacity-100" : "opacity-0"
                     )}
                   />
                 </CommandItem>
