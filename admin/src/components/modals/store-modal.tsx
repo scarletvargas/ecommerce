@@ -22,6 +22,7 @@ import {
 
 const formSchema = z.object({
   name: z.string().min(1),
+  url: z.string().url().optional(),
 });
 
 export const StoreModal = () => {
@@ -33,6 +34,7 @@ export const StoreModal = () => {
     resolver: zodResolver(formSchema),
     defaultValues: {
       name: "",
+      url: "http://localhost:3000/",
     },
   });
 
@@ -58,7 +60,7 @@ export const StoreModal = () => {
       <div>
         <div className="space-y-4 py-2 pb-4">
           <Form {...form}>
-            <form onSubmit={form.handleSubmit(onSubmit)}>
+            <form className="space-y-4" onSubmit={form.handleSubmit(onSubmit)}>
               <FormField
                 control={form.control}
                 name="name"
@@ -66,22 +68,27 @@ export const StoreModal = () => {
                   <FormItem>
                     <FormLabel>Name</FormLabel>
                     <FormControl>
-                      <Input
-                        disabled={loading}
-                        placeholder="E-commerce"
-                        {...field}
-                      />
+                      <Input disabled={loading} placeholder="E-commerce" {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="url"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>URL</FormLabel>
+                    <FormControl>
+                      <Input disabled={loading} {...field} />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
                 )}
               />
               <div className="pt-6 space-x-2 flex items-center justify-end w-full">
-                <Button
-                  disabled={loading}
-                  variant="outline"
-                  onClick={storeModal.onClose}
-                >
+                <Button disabled={loading} variant="outline" onClick={storeModal.onClose}>
                   Cancel
                 </Button>
                 <Button disabled={loading} type="submit">

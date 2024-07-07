@@ -21,6 +21,16 @@ export async function POST(req: Request, { params }: { params: { storeId: string
     return new NextResponse("Products ids are required", { status: 400 });
   }
 
+  const store = await prismadb.store.findUnique({
+    where: {
+      id: params.storeId,
+    },
+  });
+
+  if (!store) {
+    return new NextResponse("Store not found", { status: 404 });
+  }
+
   const products = await prismadb.product.findMany({
     where: {
       id: {
@@ -67,8 +77,8 @@ export async function POST(req: Request, { params }: { params: { storeId: string
     phone_number_collection: {
       enabled: true,
     },
-    success_url: `${process.env.FRONTEND_STORE_URL}/cart?success=1`,
-    cancel_url: `${process.env.FRONTEND_STORE_URL}/cart?canceled=1`,
+    success_url: `${store.url}/cart?success=1`,
+    cancel_url: `${store.url}/cart?canceled=1`,
     metadata: {
       orderId: order.id,
     },
