@@ -32,6 +32,7 @@ interface SettingsFormProps {
 
 const formSchema = z.object({
   name: z.string().min(1),
+  url: z.string().url(),
 });
 
 type SettingsFormValues = z.infer<typeof formSchema>;
@@ -87,22 +88,14 @@ export const SettingsForm: React.FC<SettingsFormProps> = ({ initialData }) => {
       />
       <div className="flex items-center justify-between">
         <Heading title="Settings" description="Manage store preferences" />
-        <Button
-          disabled={loading}
-          variant="destructive"
-          size="icon"
-          onClick={() => setOpen(true)}
-        >
+        <Button disabled={loading} variant="destructive" size="icon" onClick={() => setOpen(true)}>
           <Trash className="h-4 w-4" />
         </Button>
       </div>
       <Separator />
       <Form {...form}>
-        <form
-          onSubmit={form.handleSubmit(onSubmit)}
-          className="space-y-8 w-full"
-        >
-          <div className="grid grid-cols-3 gap-8">
+        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8 w-full">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
             <FormField
               control={form.control}
               name="name"
@@ -110,11 +103,20 @@ export const SettingsForm: React.FC<SettingsFormProps> = ({ initialData }) => {
                 <FormItem>
                   <FormLabel>Name</FormLabel>
                   <FormControl>
-                    <Input
-                      disabled={loading}
-                      placeholder="Store name"
-                      {...field}
-                    />
+                    <Input disabled={loading} placeholder="Store name" {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="url"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>URL</FormLabel>
+                  <FormControl>
+                    <Input disabled={loading} {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -132,6 +134,7 @@ export const SettingsForm: React.FC<SettingsFormProps> = ({ initialData }) => {
         description={`${origin}/api/${params.storeId}`}
         variant="public"
       />
+      <ApiAlert title="FRONTEND_STORE_URL" description={initialData.url} variant="public" />
     </>
   );
 };
